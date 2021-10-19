@@ -6,4 +6,6 @@ submitted to **Statistics in Transition new series**
 
 - R scripts with "stats" in file names contain programs for computation of quality measures 
 
+- The estimator marked as EBLUE in the article in R programs appears under the name MM
+
 
