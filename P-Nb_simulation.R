@@ -1,6 +1,6 @@
 
 # Simulation: R code for article:
-# B. Kowalczyk, R. Wieczorkowski,NEW IMPROVED POISSON AND NEGATIVE BINOMIAL ITEM COUNT
+# B. Kowalczyk, R. Wieczorkowski, NEW IMPROVED POISSON AND NEGATIVE BINOMIAL ITEM COUNT
 # TECHNIQUES FOR ELICITING TRUTHFUL ANSWERS TO SENSITIVE QUESTIONS 
 
 # model: Poisson - negative binomial

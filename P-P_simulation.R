@@ -1,18 +1,21 @@
 
 # Simulation: R code for article:
-# B. Kowalczyk, R. Wieczorkowski,NEW IMPROVED POISSON AND NEGATIVE BINOMIAL ITEM COUNT
+# B. Kowalczyk, R. Wieczorkowski, NEW IMPROVED POISSON AND NEGATIVE BINOMIAL ITEM COUNT
 # TECHNIQUES FOR ELICITING TRUTHFUL ANSWERS TO SENSITIVE QUESTIONS 
 
 # model: Poisson - Poisson
 source("P-P_code.R")
+
+source("P_code_Tian.R") # original Tian model
 
 
 symulP<-function(Niter,n,pi_true,lambda1_true,lambda2_true)
 # simulation for given parameters: n,p,lambda1, lambda2
 {
   
+  #n=250;pi_true=0.1; lambda1_true=1; lambda2_true=1
   cat("n=",n,"p=",pi_true,"lambda1=",lambda1_true,"lambda2=",lambda2_true,"\n")
-  tab<-matrix(0,Niter,2)
+  tab<-matrix(0,Niter,4)
   
   for (i in 1:Niter)
   {
@@ -56,12 +59,25 @@ symulP<-function(Niter,n,pi_true,lambda1_true,lambda2_true)
     tab[i,2]<-est_em[[1]] #ML
     
     
+    
+    ## for original method from Tian
+    tab[i,3] = mean(y2)-mean(x1)  # MM0
+    pi_init = tab[i,3]
+    pi_init = ifelse(pi_init<=0 | pi_init>=1,0.5,pi_init)
+    
+    ## Run EM Algorithm
+    
+    est_em <- em.algo.p(x1,x2,y2,pi_init,lambda1_init)
+    #print(est_em)
+    tab[i,4]<-est_em[[1]] #ML0
+    
+    
   }
   
   return(data.frame(n=rep(n,Niter),p=rep(pi_true,Niter),
                     lambda1=rep(lambda1_true,Niter),
                     lambda2=rep(lambda2_true,Niter),
-                    mm=tab[,1],ml=tab[,2]))
+                    mm=tab[,1],ml=tab[,2],mm0=tab[,3],ml0=tab[,4]))
   
 }
 
@@ -82,9 +98,10 @@ registerDoParallel(cl)
 t1<-Sys.time()
 Niter<-10000
 
-n_list<-c(100,250,500,1000)
-pi_list<-c(5,10,15,20,25,30)/100
-lambda_list<-c(1,2,3,4)
+n_list<-c(250,500,1000)
+pi_list<-c(5,10,20,30)/100
+pi_list<-c(5)/100
+lambda_list<-c(1,2,3)
 
 
 #params<-as.matrix(expand.grid(n=n_list,p=pi_list,lambda1=lambda_list,lambda2=lambda_list))
@@ -95,8 +112,7 @@ params1<-as.matrix(expand.grid(n=n_list,p=pi_list,lambda1=1,lambda2=1))
 params2<-as.matrix(expand.grid(n=n_list,p=pi_list,lambda1=2,lambda2=2))
 params3<-as.matrix(expand.grid(n=n_list,p=pi_list,lambda1=3,lambda2=3))
 params4<-as.matrix(expand.grid(n=n_list,p=pi_list,lambda1=1,lambda2=3))
-params5<-as.matrix(expand.grid(n=n_list,p=pi_list,lambda1=2,lambda2=4))
-params<-rbind(params1,params2,params3,params4,params5)
+params<-rbind(params1,params2,params3,params4)
 
                    
 
@@ -112,7 +128,7 @@ cat("Elapsed time     ",(t2-t1),"\n")
 stopCluster(cl)
 
 
-saveRDS(tab,"P-P_symul.rds")
+saveRDS(tab,"P-P_symul_a.rds")
 
 
 

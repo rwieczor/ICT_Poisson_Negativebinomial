@@ -5,12 +5,17 @@
 library(dplyr)
 
 tab<-readRDS("P-P_symul.rds")
+
 table(tab$n)
 table(tab$p)
 table(tab$lambda1)
 table(tab$lambda2)
 
 summary(tab)
+
+
+d <- filter(tab,n==250,p==0.3,lambda1==2,lambda2==2)
+boxplot(d[,-c(1:4)])
 
 
 
@@ -46,9 +51,11 @@ summarize(grp,n1=n())
 
 qq1<-do(grp,quality2(.,"mm","p"))  %>% mutate(EST="MM")
 qq2<-do(grp,quality2(.,"ml","p"))  %>% mutate(EST="ML")
+qq3<-do(grp,quality2(.,"mm0","p"))  %>% mutate(EST="MM0")
+qq4<-do(grp,quality2(.,"ml0","p"))  %>% mutate(EST="ML0")
 
-qq<-rbind(qq1,qq2)
-qq$EST<-factor(qq$EST,levels=c("MM","ML"))
+qq<-rbind(qq1,qq2,qq3,qq4)
+qq$EST<-factor(qq$EST,levels=c("MM","ML","MM0","ML0"))
   
 table(qq$EST)
 

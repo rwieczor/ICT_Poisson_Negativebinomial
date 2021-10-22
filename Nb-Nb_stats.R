@@ -5,6 +5,7 @@
 library(dplyr)
 
 tab<-readRDS("Nb-Nb_symul.rds")
+
 table(tab$n)
 table(tab$pi)
 table(tab$p)
@@ -45,9 +46,11 @@ summarize(grp,n1=n())
 
 qq1<-do(grp,quality2(.,"mm","pi"))  %>% mutate(EST="MM")
 qq2<-do(grp,quality2(.,"ml","pi"))  %>% mutate(EST="ML")
+qq3<-do(grp,quality2(.,"mm0","pi"))  %>% mutate(EST="MM0")
+qq4<-do(grp,quality2(.,"ml0","pi"))  %>% mutate(EST="ML0")
 
-qq<-rbind(qq1,qq2)
-qq$EST<-factor(qq$EST,levels=c("MM","ML"))
+qq<-rbind(qq1,qq2,qq3,qq4)
+qq$EST<-factor(qq$EST,levels=c("MM","ML","MM0","ML0"))
   
 table(qq$EST)
 
