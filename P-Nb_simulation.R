@@ -1,7 +1,7 @@
 
 # Simulation: R code for article:
-# B. Kowalczyk, R. Wieczorkowski, NEW IMPROVED POISSON AND NEGATIVE BINOMIAL ITEM COUNT
-# TECHNIQUES FOR ELICITING TRUTHFUL ANSWERS TO SENSITIVE QUESTIONS 
+# B.Kowalczyk, R.Wieczorkowski, New Improved Poisson And Negative Binomial Item Count Techniques For Eliciting Truthful  Answers To Sensitive Questions,
+# *STATISTICS IN TRANSITION new series*, March 2022, Vol. 23 No. 1, pp. 75–88, DOI 10.21307/stattrans-2022-005
 
 # model: Poisson - negative binomial
 source("P-Nb_code.R")
